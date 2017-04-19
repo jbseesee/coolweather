@@ -1,10 +1,13 @@
 package com.example.jb.coolweather.util;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.example.jb.coolweather.db.City;
 import com.example.jb.coolweather.db.County;
 import com.example.jb.coolweather.db.Province;
+import com.example.jb.coolweather.gson.Weather;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -73,6 +76,20 @@ public class Utility {
             }
         }
         return false;
+    }
+
+    public static Weather handleWeatherResponse(String response){
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            JSONArray jsonArray = jsonObject.getJSONArray("HeWeather5");
+            String weatherContent = jsonArray.getJSONObject(0).toString();
+            Log.d("TEST",String.valueOf(weatherContent ==null));
+            return new Gson().fromJson(weatherContent, Weather.class);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+
     }
 
 }
